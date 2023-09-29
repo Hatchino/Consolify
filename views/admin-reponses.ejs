@@ -1,0 +1,43 @@
+<% var title="Back-office Gestion Questions et Réponses" %>
+
+<%- include('header.ejs', { title: title }) %>
+
+<header>
+    <div class="admin-banner flex">
+        <div class="btn-back circle-back"><i class="fa-solid fa-arrow-left"></i></div>
+        <h2 class="uppercase m-auto ">Administration Consolify</h2>
+    </div>
+</header>
+
+<section id="admin-table">
+    <h3 class="text-align uppercase mt-40">Gestion des questions et réponses</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Themes</th>
+                <th>Questions</th>
+                <th>Réponses</th>
+                <th>Correct</th>
+                <th>Modifier</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% reponses.forEach(function (reponse) {  %>
+            <tr>
+                <td><%= reponse.id %></td>
+                <td><%= reponse.nom_quiz %></td>
+                <td><%= reponse.question_texte %></td>
+                <td><%= reponse.texte_reponse %></td>
+                <td><% if(reponse.est_correcte == 0) { %>
+                        Non
+                    <% }else { %>
+                        <span style="color: #20c997">Oui</span>
+                    <% } %>
+                </td>
+                <td><i class="fa-solid fa-file-pen"></i></td>
+            </tr>
+            <%  }) %>
+        </tbody>
+    </table>
+</section>

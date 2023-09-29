@@ -1,0 +1,24 @@
+<% var title="Back-office Home" %>
+
+<%- include('header.ejs', { title: title }) %>
+
+<header>
+    <div class="admin-banner flex">
+        <h2 class="uppercase">Administration Consolify</h2>
+    </div>
+</header>
+<section id="admin-nav">
+    <h4>Bienvenue sur l'Administration de Consolify, que voulez-vous faire ?</h4>
+    <div class="flex">
+        <nav>
+            <ul>
+                <li><a href="/admin-quizz">Gestion des quizz</a></li>
+                <li><a href="/admin-reponses">Gestion des questions et réponses</a></li>
+            </ul>
+        </nav>
+        <div class="picture-home-admin">
+            <img src="/pictures/adjustment-admin.jpg" alt="adjustment admin">
+        </div>
+    </div>
+   
+</section>

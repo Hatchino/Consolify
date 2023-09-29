@@ -1,0 +1,30 @@
+<% var title="S'enregistrer" %>
+
+<%- include('header.ejs', { title: title }) %>
+
+    <div class="container-center" id="register">
+        <div class="icon-login">
+            <i class="fa-regular fa-user"></i>
+        </div>
+        <div class="container-login">
+            <h2>S'enregistrer</h2>
+            
+            <form id="form-login" method="post" action="">
+                <div class="input-login">
+                    <label for="pseudo" class="label">Pseudo</label>
+                    <input type="text" name="pseudo" id="pseudo"></div>
+                <div class="input-login">
+                    <label for="password" class="label">Mot de passe</label>
+                    <input type="password" name="password" id="password">
+                    <i class="far fa-eye" id="togglePassword"></i>
+                </div>
+                    
+                <input class="submit" type="submit" value="S'enregistrer">
+                <div class="span">Vous avez déjà un compte ?<a href="/login"> Se connecter</a></div>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

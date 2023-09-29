@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../css/style.css">
+        <script src="https://kit.fontawesome.com/4ddd40e4dc.js" crossorigin="anonymous"></script>
+        <link rel="icon" href="/public/pictures/consolify.png" type="image/x-icon">
+        <title></title>
+    </head>
+<body>
+
+<div class="height-100vh flex bg-img-score">
+    <div class="container-score flex">
+        <div class="main-score">
+            <p>Voici les résultats <%= pseudo %></p>
+            <div class="circle-score ">
+                <% scores.forEach(function(score) { %>
+                    <h5><%= score.score %></h5>
+                <% }); %><span>/<%= quizInfo.nb_questions %></span>
+            </div>
+            <div>
+                <% scores.forEach(function(score) { %>
+                    <% if(score.score >= (quizInfo.nb_questions / 1.2) ) { %>
+                        <p>Très bien</p>
+                    <% } else if(score.score >= (quizInfo.nb_questions / 1.5) ) { %>
+                        <p>Bien</p>
+                    <% } else if(score.score >= (quizInfo.nb_questions / 2) ) { %>
+                        <p>Tu as encore des progrès à faire !</p>
+                    <% } else { %>
+                        <p>Ton niveau est médiocre, continue de t'entrainer sur Consolify !</p>
+                    <% } %>
+                <% }); %>
+            </div>
+            <div class="btn-score"><a href="/">Home</a></div>
+        </div>
+        <div style="padding: 0 30px;"><img src="../../pictures/win-achievement.avif" style="max-height: 430px;" alt=""></div>
+    </div>
+    
+</div>
+
+</body>
+</html>
+

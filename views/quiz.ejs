@@ -1,0 +1,42 @@
+<% var title="Quizz " + quizData.nomQuiz + "" %>
+
+<%- include('header.ejs', { title: title }) %>
+
+<div id="container-quizz">
+  <div class="title-quizz">
+      <h1>Quizz <%= quizData.nomQuiz %></h1>
+  </div>
+  <form action="/form-quiz" method="post" id="form-quiz">
+    <input type="hidden" value="<%= quizData.idQuiz %>" name="id_quizzes">
+    <input type="hidden" name="id_utilisateur" value="<%= userId %>" />
+   
+
+  <% quizData.questions.forEach(function (question,  index) { %>
+    <section class="flex section-quiz">
+        <div class="w-100 text-align">
+            <p id="text-question"><%= question.question %></p>
+            <input type="hidden" name="questionId<%= index %>" value="<%= question.idQuestions %>" />
+        </div>
+        <ul class="w-100 text-align">
+          <% question.reponses.forEach(function (reponse) { %>
+           
+            <li class="btn-opaque">
+                <label for="<%= reponse.texte_reponse %>"></label>
+                <input type="radio" name="reponse<%= index %>" class="btn-radio" id="<%= reponse.texte_reponse %>" value="<%= reponse.texte_reponse %>" 
+                 /> <%= reponse.texte_reponse %>
+            </li>
+          <% }) %>
+        </ul>
+    </section>
+    <% }) %>
+    <div class="flex space-evenly mb-40">
+      <div class="btn-back uppercase ">
+        <a href="#" class="flex-only">
+            <div><i class="fa-solid fa-arrow-left-long"></i></div>
+            <div class="flex bg-kaki border-kaki">Retour</div>
+        </a>
+      </div>
+      <button type="submit" class="btn-submit "><i class="fa-solid fa-paper-plane" style="margin-right: 10px;"></i>Envoyer</button>
+    </div>
+  </form>
+</div>

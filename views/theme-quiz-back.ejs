@@ -1,0 +1,107 @@
+<% var title="Thèmes quiz back-end" %>
+
+<%- include('header.ejs', { title: title }) %>
+
+
+        <div class="banner flex">
+            <h2>Tester vos compétences techniques de Développeur Back-end </h2>
+        </div>
+        <div class="flex-only container-body">
+            <div class="body-cart">
+                <div class="flex-only line-title">
+                    <div class="horizontal-line"></div>
+                    <h3 class="color-dark-blue">Choisir un thème</h3>
+                    <div class="horizontal-line"></div>
+                </div>
+                <div class="container-cart">
+                    <div class="cart cart-mysql">
+                        <a href="/quiz-description/5">
+                            <div class="flex">
+                                <i class="fa-solid fa-database"></i>
+                                <p>Mysql</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="cart cart-php">
+                        <a href="/quiz-description/2">
+                            <div class="flex">
+                                <i class="fa-brands fa-php"></i>
+                                <p>php</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar bg-dark-blue">
+                <div>
+                    <h1>CONSOLIFY</h1>
+                    <div class="horizontal-line"></div>
+                    <div>
+                        <a href="/" class="uppercase flex navbar-icon navbar-hover-back">
+                            <div>Home</div>
+                            <i class="fa-solid fa-house"></i>
+                        </a>
+                    </div>
+                    <div class="horizontal-line"></div>
+                    <% if (typeof pseudo == 'undefined') { %>
+                        <div class="navbar-btn">
+                            <div type="button" class="btn-login uppercase">
+                                <a href="/login" class="flex">
+                                    <p>Connexion</p>
+                                    <i class="fa-solid fa-user"></i>
+                                </a>
+                            </div>
+                            <div type="button" class="btn-register uppercase">
+                                <a href="/register" class="flex">
+                                    <p>S'inscrire</p>
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                    <% } else { %>
+                        <div class="navbar-btn">
+                            <% if (isAdmin) { %>
+                            <div class="horizontal-line"></div>
+                            <div type="button">
+                                <a href="/admin-home"  class="uppercase flex navbar-icon navbar-hover-back">
+                                    <p>Back-office</p>
+                                    <i class="fa-solid fa-gear"></i>
+                                </a>
+                            </div>
+                            <div class="horizontal-line"></div>
+                            <% } %>
+                            <div type="button" style="margin-bottom: 0;">
+                                <a href="/logout" class="uppercase flex navbar-icon navbar-hover-back">
+                                    <p>Se déconnecter</p>
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                </a>
+                            </div>
+                            <div class="horizontal-line"></div>
+                        </div>
+                    <% } %>
+                </div>
+
+                <footer style="margin-top: 30px;">
+                    <div class="flex">
+                        <i class="fa-solid fa-chevron-up"></i>
+                    </div>
+                    <div class="horizontal-line"></div>
+                    <div class="flex-only">
+                        <div class="animation-footer-link animation-link-dark">
+                            <p><a href="#">CGU</a></p>
+                            <p><a href="#">Politique de confidentialité</a></p>
+                        </div>
+                        <div class="animation-footer-link animation-link-dark">
+                            <p><a href="#">Contact</a></p>
+                            <p><a href="#">A propos</a></p>
+                        </div>
+                    </div>
+                    <div class="horizontal-line"></div>
+                    <p>Copyright &copy; 2023 - Tous droits réservés</p>
+                </footer>
+            </div>
+        </div>
+        <script src="../js/main.js"></script>
+        </body>
+
+        </html>

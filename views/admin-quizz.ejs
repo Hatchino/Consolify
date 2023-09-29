@@ -1,0 +1,40 @@
+<% var title="Back-office Gestion Questions et Réponses" %>
+
+<%- include('header.ejs', { title: title }) %>
+
+<header>
+    <div class="admin-banner flex">
+        <div class="btn-back circle-back"><i class="fa-solid fa-arrow-left"></i></div>
+        <h2 class="uppercase m-auto ">Administration Consolify</h2>
+    </div>
+</header>
+
+<section id="admin-table">
+    <h3 class="text-align uppercase mt-40">Gestion des quizz</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Type</th>
+                <th>Niveau</th>
+                <th>Temps du quizz</th>
+                <th>Nombres de questions</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% quizzes.forEach(function (quizze) {  %>
+            <tr>
+                <td><%= quizze.id %></td>
+                <td><%= quizze.nom %></td>
+                <td><%= quizze.type_code %></td>
+                <td><%= quizze.niveau %></td>
+                <td><%= quizze.temps_minutes %></td>
+                <td><%= quizze.nb_questions %></td>
+                <td><%= quizze.description %></td>
+            </tr>
+            <%  }) %>
+        </tbody>
+    </table>
+</section>

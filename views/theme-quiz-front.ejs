@@ -1,0 +1,112 @@
+<% var title="Thèmes quiz front-end" %>
+
+<%- include('header.ejs', { title: title }) %>
+
+    <div class="banner flex">
+        <h2>Tester vos compétences techniques de Développeur Front-end </h2>
+    </div>
+    <div class="flex-only container-body">
+        <div class="body-cart">
+            <div class="flex-only line-title">
+                <div class="horizontal-line bg-peach"></div>
+                <h3 class="color-sand">Choisir un thème</h3>
+                <div class="horizontal-line bg-peach"></div>
+            </div>
+            <div class="container-cart">
+                <div class="cart cart-html">
+                    <a href="/quiz-description/1">
+                        <div class="flex">
+                            <i class="fa-brands fa-html5"></i>
+                            <p>html</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="cart cart-css">
+                    <a href="/quiz-description/3">
+                        <div class="flex">
+                            <i class="fa-brands fa-css3-alt"></i>
+                            <p>css</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="cart cart-js">
+                    <a href="/quiz-description/4">
+                        <div class="flex">
+                            <i class="fa-brands fa-square-js"></i>
+                            <p>JavaScript</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="navbar bg-sand">
+            <div>
+                <h1>CONSOLIFY</h1>
+                <div class="horizontal-line bg-peach"></div>
+                <div>
+                    <a href="/" class="uppercase flex navbar-icon navbar-hover-front">
+                        <div>Home</div>
+                        <i class="fa-solid fa-house"></i>
+                    </a>
+                </div>
+                <div class="horizontal-line bg-peach"></div>
+                <% if (typeof pseudo == 'undefined') { %>
+                    <div class="navbar-btn">
+                        <div type="button" class="btn-login uppercase">
+                            <a href="/login" class="flex">
+                                <p>Connexion</p>
+                                <i class="fa-solid fa-user"></i>
+                            </a>
+                        </div>
+                        <div type="button" class="btn-register uppercase">
+                            <a href="/register" class="flex">
+                                <p>S'inscrire</p>
+                                <i class="fa-solid fa-user-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <% } else { %>
+                        <div class="navbar-btn">
+                            <% if (isAdmin) { %>
+                            <div class="horizontal-line bg-peach"></div>
+                            <div type="button">
+                                <a href="/admin-home"  class="uppercase flex navbar-icon navbar-hover-front">
+                                    <p>Back-office</p>
+                                    <i class="fa-solid fa-gear"></i>
+                                </a>
+                            </div>
+                            <div class="horizontal-line bg-peach"></div>
+                            <% } %>
+                            <div type="button" style="margin-bottom: 0;">
+                                <a href="/logout" class="uppercase flex navbar-icon navbar-hover-front">
+                                    <p>Se déconnecter</p>
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                </a>
+                            </div>
+                            <div class="horizontal-line"></div>
+                        </div>
+                    <% } %>
+            </div>
+
+            <footer>
+                <div class="flex">
+                    <i class="fa-solid fa-chevron-up"></i>
+                </div>
+                <div class="horizontal-line bg-peach"></div>
+                <div class="flex-only">
+                    <div class="animation-footer-link animation-link-sand">
+                        <p><a href="#">CGU</a></p>
+                        <p><a href="#">Politique de confidentialité</a></p>
+                    </div>
+                    <div class="animation-footer-link animation-link-sand">
+                        <p><a href="#">Contact</a></p>
+                        <p><a href="#">A propos</a></p>
+                    </div>
+                </div>
+                <div class="horizontal-line bg-peach"></div>
+                <p>Copyright &copy; 2023 - Tous droits réservés</p>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

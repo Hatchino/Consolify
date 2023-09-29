@@ -1,0 +1,33 @@
+<% var title="Se connecter" %>
+
+<%- include('header.ejs', { title: title }) %>
+
+<body>
+    <div class="container-center">
+        <div id="message-error"></div>
+        <div class="icon-login">
+            <i class="fa-regular fa-user"></i>
+        </div>
+        <div class="container-login">
+            <h2>Se connecter</h2>
+            
+            <form id="form-login" method="post" action="/auth">
+                <div class="input-login">
+                    <label for="pseudo" class="label">Pseudo</label>
+                    <input type="text" name="pseudo" id="pseudo" required></div>
+                <div class="input-login">
+                    <label for="password" class="label">Mot de passe</label>
+                    <input type="password" name="password" id="password" required>
+                    <i class="far fa-eye" id="togglePassword"></i>
+                </div>
+                    
+                <div><a href="#" class="text-blue">Mot de passe oublié ?</a></div>
+                <input class="submit" type="submit" value="Se connecter">
+                <div class="span">Vous n'avez pas de compte ?<a href="/register"> S'inscrire</a></div>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
