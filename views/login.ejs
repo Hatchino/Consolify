@@ -3,7 +3,7 @@
 <%- include('header.ejs', { title: title }) %>
 
 <body>
-    <div class="container-center">
+    <div class="container-center" id="login">
         <div id="message-error"></div>
         <div class="icon-login">
             <i class="fa-regular fa-user"></i>
@@ -20,8 +20,6 @@
                     <input type="password" name="password" id="password" required>
                     <i class="far fa-eye" id="togglePassword"></i>
                 </div>
-                    
-                <div><a href="#" class="text-blue">Mot de passe oublié ?</a></div>
                 <input class="submit" type="submit" value="Se connecter">
                 <div class="span">Vous n'avez pas de compte ?<a href="/register"> S'inscrire</a></div>
             </form>

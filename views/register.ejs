@@ -1,8 +1,10 @@
 <% var title="S'enregistrer" %>
 
 <%- include('header.ejs', { title: title }) %>
-
-    <div class="container-center" id="register">
+<section id="register">
+   
+    <div class="container-center" >
+        <div id="message-error"></div>
         <div class="icon-login">
             <i class="fa-regular fa-user"></i>
         </div>
@@ -18,12 +20,18 @@
                     <input type="password" name="password" id="password">
                     <i class="far fa-eye" id="togglePassword"></i>
                 </div>
+                <div class="input-login">
+                    <label for="confirmPassword" class="label">Confirmation du mot de passe</label>
+                    <input type="password" name="confirmPassword" id="confirmPassword">
+                </div>
                     
                 <input class="submit" type="submit" value="S'enregistrer">
                 <div class="span">Vous avez déjà un compte ?<a href="/login"> Se connecter</a></div>
             </form>
         </div>
     </div>
+
+</section>
 
 </body>
 

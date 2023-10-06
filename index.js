@@ -358,15 +358,15 @@ app.post('/auth', function(request, response) {
                         request.session.isAdmin = isAdmin;
                         response.redirect('/');
                     } else {
-                        response.send('Pseudo ou mot de passe incorrect !');
+                        response.redirect('/login?error=4');
                     }
                 });
             } else {
-                response.send('Pseudo ou mot de passe incorrect !');
+                response.redirect('/login?error=4');
             }
         });
     } else {
-        response.send('Veuillez entrer un pseudo et un mot de passe !');
+        response.redirect('/login?error=2');
     }
 });
 
@@ -375,34 +375,40 @@ app.post('/auth', function(request, response) {
 app.get("/register", (request, response) => {
     response.render("register");
 });
+
 app.post('/register', function(request, response) {
     let pseudo = request.body.pseudo;
     let password = request.body.password;
+    let confirmPassword = request.body.confirmPassword;
 
-    if (pseudo && password) {
-        // Vérifier si le pseudo existe déjà
-        connect.query('SELECT * FROM utilisateurs WHERE pseudo = ?', [pseudo], function(error, results, fields) {
-            if (error) throw error;
+    if (pseudo && password && confirmPassword) {
+        if (password !== confirmPassword) {
+            response.redirect('/register?error=1');
+        } else {
+            // Vérifier si le pseudo existe déjà
+            connect.query('SELECT * FROM utilisateurs WHERE pseudo = ?', [pseudo], (error, results, fields) => {
+                if (error) throw error;
 
-            if (results.length > 0) {
-                response.send('Ce pseudo existe déjà. Veuillez en choisir un autre.');
-            } else {
-                bcrypt.hash(password, 10, function(err, hashedPassword) {
-                    if (err) throw err;
-
-                    const adminDefaultValue = 'non';
-                    connect.query('INSERT INTO utilisateurs (pseudo, password, admin) VALUES (?, ?, ?)', [pseudo, hashedPassword, adminDefaultValue], function(error, results, fields) {
-                        if (error) throw error;
-                        
-                        response.redirect('/login');
+                if (results.length > 0) {
+                    response.redirect('/register?error=3');
+                } else {
+                    // Hasher le mot de passe
+                    bcrypt.hash(password, 10, (err, hashedPassword) => {
+                        if (err) throw err;
+                        const adminDefaultValue = 'non';
+                        connect.query('INSERT INTO utilisateurs (pseudo, password, admin) VALUES (?, ?, ?)', [pseudo, hashedPassword, adminDefaultValue], (error, results, fields) => {
+                            if (error) throw error;
+                            response.redirect('/login');
+                        });
                     });
-                });
-            }
-        });
+                }
+            });
+        }
     } else {
-        response.send('Veuillez entrer un pseudo et un mot de passe !');
+        response.redirect('/register?error=2');
     }
 });
+
 
 
 app.get('/logout', (req, res) => {

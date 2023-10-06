@@ -2,6 +2,7 @@
 
 <%- include('header.ejs', { title: title }) %>
 
+<% if (typeof pseudo !== 'undefined') { %>
 <header>
     <div class="admin-banner flex">
         <div class="btn-back circle-back"><i class="fa-solid fa-arrow-left"></i></div>
@@ -38,3 +39,8 @@
         </tbody>
     </table>
 </section>
+<% } else { %>
+    <script>
+        window.location.href = "/";
+      </script>
+    <% } %>
