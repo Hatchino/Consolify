@@ -30,10 +30,6 @@ body {
   transition: transform 0.3s ease-in-out;
 }
 
-.open .rotate-icon {
-  transform: rotate(360deg);
-}
-
 .animation-footer-link a {
   position: relative;
   display: inline-block;
@@ -363,15 +359,6 @@ body {
   gap: 50px;
   margin: 40px 120px;
 }
-.cart-html {
-  grid-area: 1/1/2/2;
-}
-.cart-css {
-  grid-area: 1/2/2/3;
-}
-.cart-js {
-  grid-area: 2/1/3/2;
-}
 .line-title {
   align-items: center;
 }
@@ -387,6 +374,7 @@ body {
   border-radius: 10px;
   position: relative;
   box-shadow: 1px 9px 47px 0px rgba(0, 0, 0, 0.46);
+  background-size: cover;
 }
 .cart div {
   position: relative;
@@ -404,26 +392,6 @@ body {
 .cart div i {
   color: #D0D0D0;
   font-size: 70px;
-}
-.cart.cart-html {
-  background: url("../pictures/developpement-web-html.jpg") no-repeat center;
-  background-size: cover;
-}
-.cart.cart-css {
-  background: url("../pictures/developpement-web-css.jpg") no-repeat center;
-  background-size: cover;
-}
-.cart.cart-js {
-  background: url("../pictures/developpement-web-js.jpg") no-repeat center;
-  background-size: cover;
-}
-.cart.cart-mysql {
-  background: url("../pictures/developpement-web-mysql.jpg") no-repeat center;
-  background-size: cover;
-}
-.cart.cart-php {
-  background: url("../pictures/developpement-web-php.jpg") no-repeat center;
-  background-size: cover;
 }
 .cart::before {
   content: "";
@@ -1001,6 +969,7 @@ input[type="radio"].demo1:checked + label {
   object-fit: contain;
 }
 
+/* admin gestion */
 table {
   border-collapse: collapse;
   width: 100%;
@@ -1032,4 +1001,54 @@ margin: 0 50px;
   background: #fff;
   color: #0E3354;
   padding: 10px 15px;
+}
+.btn-add {
+  padding: 10px 20px;
+  text-align: center;
+  text-transform: uppercase;
+  background: #008993;
+}
+
+/* add quizz */
+#form-add-quizz {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 5px;
+}
+#form-add-quizz label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 22px
+}
+
+#form-add-quizz input[type="text"],
+#form-add-quizz select,
+#form-add-quizz textarea,
+#form-add-quizz input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+#form-add-quizz button[type="submit"] {
+  background-color: #008993;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 20px;
+  cursor: pointer;
+  width: 100%;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+#form-add-quizz button[type="submit"]:hover {
+  background-color: #0056b3;
 }

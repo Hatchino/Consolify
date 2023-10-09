@@ -2,7 +2,7 @@
 
 <%- include('header.ejs', { title: title }) %>
 
-<% if (typeof pseudo !== 'undefined') { %>
+<% if (typeof pseudo !== 'undefined' && isAdmin) { %>
 <header>
     <div class="admin-banner flex">
         <h2 class="uppercase">Administration Consolify</h2>

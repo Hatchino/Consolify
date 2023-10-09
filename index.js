@@ -2,6 +2,7 @@ const express = require("express");
 const mysql = require("mysql");
 const session = require('express-session');
 const bcrypt = require('bcrypt');
+const multer = require('multer');
 
 
 const connect = mysql.createConnection({
@@ -40,6 +41,16 @@ app.listen(PORT, () => {
     console.log(`Serveur Express en cours d'exécution sur le port ${PORT}`);
 });
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/pictures');
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '-' + file.originalname); // Nom du fichier (avec horodatage pour éviter les doublons)
+    }
+  });
+  
+const upload = multer({ storage: storage });
 
 
 app.use((request, response, next) => {
@@ -52,26 +63,58 @@ app.get('/', (request, response) => {
     const pseudo = request.session.pseudo;
     response.render('home', {pseudo}); 
 });
-
+app.get("/admin-home", (request, response) => {
+    response.render("admin-home");
+});
 app.get('/theme-quiz-front', (request, response) => {
-    response.render('theme-quiz-front');
+    connect.query("SELECT id, nom, img, icone FROM quizzes WHERE type_code='front'", (err, result) => {
+        if (err) throw err;
+        response.render('theme-quiz-front', {themes : result});
+    })
 });
-// Middleware pour vérifier si l'utilisateur est connecté
-const checkAuthentication = (req, res, next) => {
-
-    const pseudo = req.session.pseudo; 
-  
-    if (!pseudo) {
-        res.redirect('/login'); 
-      
-    } else {
-        next(); // L'utilisateur est connecté, passez à la prochaine étape de traitement.
-    }
-  };
-
 app.get("/theme-quiz-back", (request, response) => {
-    response.render("theme-quiz-back", { pseudo: request.session.pseudo });
+    connect.query("SELECT id, nom, img, icone FROM quizzes WHERE type_code='back'", (err, result) => {
+        if (err) throw err;
+        response.render('theme-quiz-back', {themes : result});
+    })
 });
+
+app.get("/add-quizz", (request, response) => {
+    response.render("add-quizz");
+});
+app.post('/add-quizz', upload.single('image'), (req, res) => {
+    const { nom, type, niveau, temps, questions, description, icone } = req.body;
+    const imageFileName = req.file.filename;
+    console.log({ nom, type, niveau, temps, questions, description, icone })
+  
+    if (!nom || !type || !niveau || !temps || !questions || !description || !icone) {
+      res.redirect('/add-quizz?error=2');
+      return;
+    }
+  
+    const sqlInsert = 'INSERT INTO quizzes (nom, type_code, niveau, temps_minutes, nb_questions, description, img, icone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    const values = [nom, type, niveau, temps, questions, description, imageFileName, icone];
+    
+    
+    connect.query(sqlInsert, values, (err, result) => {
+        if (err) {
+            throw err;
+        }
+        console.log('Quiz inséré avec succès dans la base de données');
+        res.redirect('/admin-quizz');
+    });
+});
+
+
+// Middleware pour vérifier si l'utilisateur est connecté
+const checkAuthentication = (request, response, next) => {
+    const pseudo = request.session.pseudo; 
+    if (!pseudo) {
+        response.redirect('/login'); 
+    } else {
+        next(); // L'utilisateur est connecté, passez à la prochaine étape de traitement
+    }
+};
 
 app.get("/quiz-description/:id", (request, response) => {
     const id = parseInt(request.params.id);
@@ -79,16 +122,11 @@ app.get("/quiz-description/:id", (request, response) => {
     connect.query(`SELECT * FROM quizzes WHERE id=${id}`, (err, quizResult) => {
         if (err) throw err;
         
-        // Requête pour récupérer tous les noms de quizzes
         connect.query(`SELECT * FROM quizzes`, (err, allQuizzesResult) => {
             if (err) throw err;
             response.render("quiz-description", { quiz: quizResult[0], allQuizzes: allQuizzesResult });
         });
     });
-});
-
-app.get("/admin-home", (request, response) => {
-    response.render("admin-home");
 });
 
 app.get("/admin-reponses", (request, response) => {
@@ -134,8 +172,6 @@ app.get("/quiz/:id", checkAuthentication, (request, response) => {
         
         if (userResult.length > 0) {
             const userId = userResult[0].id;
-
-            // Utilisation d'une seule requête SQL avec une jointure pour récupérer toutes les données
             connect.query(`
                 SELECT questions.*, 
                     reponses.texte_reponse, 
@@ -183,16 +219,13 @@ app.get("/quiz/:id", checkAuthentication, (request, response) => {
                         texte_reponse: row.texte_reponse,
                         est_correcte: row.est_correcte,
                     });
-
-                    // Questions.push(questionId);
                 });
 
                 // Organisez les données pour afficher dans le modèle EJS
                 const quizData = {
                     nomQuiz: result[0].nomQuiz, // Le nom du quiz est le même pour toutes les questions
                     idQuiz: result[0].id_quizzes,
-                    questions: Object.values(questionsData), // Convertissez l'objet en tableau d'objets pour l'affichage.
-                    // idQuestions: idQuestions,
+                    questions: Object.values(questionsData), // Convertissez l'objet en tableau d'objets pour l'affichage
                 };
 
                 response.render("quiz", {
@@ -204,16 +237,15 @@ app.get("/quiz/:id", checkAuthentication, (request, response) => {
             });
         } else {
             console.error('Utilisateur introuvable dans la base de données');
-            // Gérer l'erreur si l'utilisateur n'est pas trouvé
         }
     });
 });
 
 
-app.post('/form-quiz', async (req, res) => {
-    const quizData = req.body; // Les données du formulaire
-    const pseudo = req.session.pseudo;
-    const id = parseInt(req.params.id);
+app.post('/form-quiz', async (request, response) => {
+    const quizData = request.body; // Les données du formulaire
+    const pseudo = request.session.pseudo;
+    const id = parseInt(request.params.id);
   
     // Calcul du score final
     let scoreFinal = 0;
@@ -236,7 +268,6 @@ app.post('/form-quiz', async (req, res) => {
                     }
                     if (result.length > 0 && result[0].est_correcte == 1) {
                         scoreFinal++;
-                        console.log(scoreFinal)
                     }
                     resolve();
                 });
@@ -274,7 +305,7 @@ app.post('/form-quiz', async (req, res) => {
                     throw err;
                 }
                 console.log('Score inséré avec succès dans la base de données');
-                res.redirect(`/quiz/${quizData.id_quizzes}/result-user`);
+                response.redirect(`/quiz/${quizData.id_quizzes}/result-user`);
             });
         } else {
             console.error('Utilisateur introuvable dans la base de données');
@@ -335,11 +366,6 @@ app.get("/login", (request, response) => {
     response.render("login");
 });
 
-app.get("/test", (request, response) => {
-    response.render("test");
-});
-
-
 app.post('/auth', function(request, response) {
     let pseudo = request.body.pseudo;
     let password = request.body.password;
@@ -369,8 +395,6 @@ app.post('/auth', function(request, response) {
         response.redirect('/login?error=2');
     }
 });
-
-
 
 app.get("/register", (request, response) => {
     response.render("register");
@@ -409,20 +433,17 @@ app.post('/register', function(request, response) {
     }
 });
 
-
-
-app.get('/logout', (req, res) => {
-    req.session.destroy((err) => {
+app.get('/logout', (request, response) => {
+    request.session.destroy((err) => {
       if (err) {
         console.error('Erreur lors de la déconnexion :', err);
       } else {
-        res.redirect('/');
+        response.redirect('/');
       }
     });
-  });
+});
 
 
-
-app.use((req, res) => {
-    res.status(404).render("404");
+app.use((request, response) => {
+    response.status(404).render("404");
 });

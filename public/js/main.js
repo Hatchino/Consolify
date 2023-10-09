@@ -62,17 +62,17 @@ const icon = document.querySelector(".rotate-icon");
 
 if (toggleDiv) {
   toggleDiv.addEventListener("click", function () {
-      if (navCategory.style.display === "none" || navCategory.style.display === "") {
-          // Ouvrir la catégorie de navigation
-          navCategory.style.display = "block";
-          navCategory.classList.add("open");
-          icon.style.transform = "rotate(180deg)";
-      } else {
-          // Fermer la catégorie de navigation
-          navCategory.style.display = "none";
-          navCategory.classList.remove("open");
-          icon.style.transform = "rotate(0deg)";
-      }
+    if (!navCategory.classList.contains("open")) {
+      // Ouvrir la catégorie de navigation
+      navCategory.style.display = "block";
+      navCategory.classList.add("open");
+      icon.style.transform = "rotate(180deg)";
+    } else {
+      // Fermer la catégorie de navigation
+      navCategory.style.display = "none";
+      navCategory.classList.remove("open");
+      icon.style.transform = "rotate(0deg)";
+    }
   });
 }
 

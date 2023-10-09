@@ -2,7 +2,7 @@
 
 <%- include('header.ejs', { title: title }) %>
 
-<% if (typeof pseudo !== 'undefined') { %>
+<% if (typeof pseudo !== 'undefined' && isAdmin) { %>
 <header>
     <div class="admin-banner flex">
         <div class="btn-back circle-back"><i class="fa-solid fa-arrow-left"></i></div>
@@ -11,7 +11,10 @@
 </header>
 
 <section id="admin-table">
-    <h3 class="text-align uppercase mt-40">Gestion des quizz</h3>
+    <div class="flex mt-40">
+        <h3 class="text-align uppercase m-auto">Gestion des quizz</h3>
+        <div class="btn-add"><a href="/add-quizz">Ajouter un quizz</a></div>
+    </div>
     <table>
         <thead>
             <tr>
@@ -22,6 +25,8 @@
                 <th>Temps du quizz</th>
                 <th>Nombres de questions</th>
                 <th>Description</th>
+                <th>Image</th>
+                <th>Icone</th>
             </tr>
         </thead>
         <tbody>
@@ -31,9 +36,11 @@
                 <td><%= quizze.nom %></td>
                 <td><%= quizze.type_code %></td>
                 <td><%= quizze.niveau %></td>
-                <td><%= quizze.temps_minutes %></td>
+                <td><%= quizze.temps_minutes %> min</td>
                 <td><%= quizze.nb_questions %></td>
                 <td><%= quizze.description %></td>
+                <td><img src="../pictures/<%= quizze.img %>" alt="<%= quizze.nom %>" style="width: 100px;"></td>
+                <td> <i class="<%= quizze.icone %>"></i></td>
             </tr>
             <%  }) %>
         </tbody>

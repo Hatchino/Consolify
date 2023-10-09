@@ -1,0 +1,49 @@
+<% var title="Back-office Ajouter un quizz" %>
+<%- include('header.ejs', { title: title }) %>
+
+<% if (typeof pseudo !=='undefined' && isAdmin) { %>
+
+    <h1>Ajouter un quiz</h1>
+    
+    <form action="/add-quizz" method="POST" enctype="multipart/form-data" id="form-add-quizz">
+        <div id="message-error"></div>
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" name="nom" required>
+
+        <label for="type">Type :</label>
+        <select id="type" name="type" required>
+            <option value="front">Front-end</option>
+            <option value="back">Back-end</option>
+        </select>
+
+        <label for="niveau">Niveau :</label>
+        <select id="niveau" name="niveau" required>
+            <option value="facile">Facile</option>
+            <option value="moyen">Moyen</option>
+            <option value="difficile">Difficile</option>
+        </select>
+
+        <label for="temps">Temps du quizz (en min) :</label>
+        <input type="text" id="temps" name="temps" required>
+
+        <label for="questions">Nombre de questions :</label>
+        <input type="text" id="questions" name="questions" required>
+
+        <label for="description">Description :</label>
+        <textarea id="description" name="description" required></textarea>
+
+        <label for="image">Image :</label>
+        <input type="file" id="image" name="image" accept="image/*" required>
+
+        <label for="icone">Icône :</label>
+        <input type="text" id="icone" name="icone" required>
+
+        <button type="submit">Ajouter le quiz</button>
+    </form>
+
+
+<% } else { %>
+    <script>
+        window.location.href = "/";
+        </script>
+    <% } %>

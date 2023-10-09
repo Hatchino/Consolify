@@ -14,22 +14,16 @@
                     <div class="horizontal-line"></div>
                 </div>
                 <div class="container-cart">
-                    <div class="cart cart-mysql">
-                        <a href="/quiz-description/5">
-                            <div class="flex">
-                                <i class="fa-solid fa-database"></i>
-                                <p>Mysql</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="cart cart-php">
-                        <a href="/quiz-description/2">
-                            <div class="flex">
-                                <i class="fa-brands fa-php"></i>
-                                <p>php</p>
-                            </div>
-                        </a>
-                    </div>
+                    <% themes.forEach(function(theme) { %>
+                        <div class="cart" style="background: url('../pictures/<%= theme.img %>') no-repeat center; background-size: cover;">
+                            <a href="/quiz-description/<%= theme.id %>">
+                                <div class="flex">
+                                    <i class="<%= theme.icone %>"></i>
+                                    <p><%= theme.nom %></p>
+                                </div>
+                            </a>
+                        </div>
+                    <% }) %>
                 </div>
             </div>
             <div class="navbar bg-dark-blue">
