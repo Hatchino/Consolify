@@ -3,7 +3,7 @@
 
 <% if (typeof pseudo !=='undefined' && isAdmin) { %>
 
-    <h1>Ajouter un quiz</h1>
+    <h1 class="text-align uppercase mb-40 mt-40">Ajouter un quiz</h1>
     
     <form action="/add-quizz" method="POST" enctype="multipart/form-data" id="form-add-quizz">
         <div id="message-error"></div>
@@ -35,8 +35,8 @@
         <label for="image">Image :</label>
         <input type="file" id="image" name="image" accept="image/*" required>
 
-        <label for="icone">Icône :</label>
-        <input type="text" id="icone" name="icone" required>
+        <label for="icone">Icône <i class="fa-solid fa-circle-info" title="Ajouter le contenu de la class de l'icone fontawesome"></i> :</label>
+        <input type="text" id="icone" name="icone" placeholder="fa-solid fa-circle-info" required>
 
         <button type="submit">Ajouter le quiz</button>
     </form>

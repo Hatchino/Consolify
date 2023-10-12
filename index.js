@@ -41,14 +41,15 @@ app.listen(PORT, () => {
     console.log(`Serveur Express en cours d'exécution sur le port ${PORT}`);
 });
 
+// configurer le middleware multer 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, 'public/pictures');
     },
     filename: function (req, file, cb) {
-      cb(null, Date.now() + '-' + file.originalname); // Nom du fichier (avec horodatage pour éviter les doublons)
+      cb(null, file.originalname);
     }
-  });
+});
   
 const upload = multer({ storage: storage });
 
@@ -329,8 +330,6 @@ app.get("/quiz/:id/result-user", (request, response) => {
 
         if (userResult.length > 0) {
             const userId = userResult[0].id;
-
-            // Maintenant, vous pouvez exécuter une requête SQL pour récupérer des informations depuis la table "quizzes"
             const sqlGetQuizInfo = "SELECT * FROM quizzes WHERE id = ?";
             connect.query(sqlGetQuizInfo, [quizId], (err, quizResult) => {
                 if (err) {
@@ -338,7 +337,6 @@ app.get("/quiz/:id/result-user", (request, response) => {
                 }
 
                 if (quizResult.length > 0) {
-                    // quizResult contient les informations sur le quiz avec l'ID spécifié
                     const quizInfo = quizResult[0];
 
                     const sqlDisplayScore = "SELECT * FROM resultats_utilisateurs WHERE id_quizzes = ? AND id_utilisateur = ? ORDER BY date DESC LIMIT 1";
@@ -346,18 +344,16 @@ app.get("/quiz/:id/result-user", (request, response) => {
                         if (err) {
                             throw err;
                         }
-
-                        // Passer les résultats de la requête à la vue EJS
                         response.render("result-user", { scores: result, pseudo, quizInfo });
                     });
                 } else {
                     console.error('Quiz introuvable dans la base de données');
-                    response.status(404).send('Quiz introuvable');
+                    response.redirect("/404");
                 }
             });
         } else {
             console.error('Utilisateur introuvable dans la base de données');
-            response.status(404).send('Utilisateur introuvable');
+            response.redirect("/404");
         }
     });
 });
