@@ -1,38 +1,46 @@
 <% var title="S'enregistrer" %>
 
-<%- include('header.ejs', { title: title }) %>
-<section id="register">
-   
-    <div class="container-center" >
-        <div id="message-error"></div>
-        <div class="icon-login">
+    <%- include('header.ejs', { title: title }) %>
+        <section id="register">
+
+            <div class="container-center">
+                <div id="message-error"></div>
+                <!-- <div class="icon-login">
             <i class="fa-regular fa-user"></i>
-        </div>
-        <div class="container-login">
-            <h2>S'enregistrer</h2>
-            
-            <form id="form-login" method="post" action="">
-                <div class="input-login">
-                    <label for="pseudo" class="label">Pseudo</label>
-                    <input type="text" name="pseudo" id="pseudo"></div>
-                <div class="input-login">
-                    <label for="password" class="label">Mot de passe</label>
-                    <input type="password" name="password" id="password">
-                    <i class="far fa-eye" id="togglePassword"></i>
+        </div> -->
+                <div class="container-login">
+                    <h2>S'enregistrer</h2>
+                    <form id="form-login" method="post" action="">
+                        <div class="input-login">
+                            <label for="pseudo" class="label">Pseudo</label>
+                            <input type="text" name="pseudo" id="pseudo">
+                        </div>
+                        <div class="input-login">
+                            <label for="password" class="label">Mot de passe</label>
+                            <input type="password" name="password" id="password" class="password-input">
+                            <i class="far fa-eye" id="togglePassword"></i>
+                            <div class="password-checklist">
+                                <h3 class="checklist-title">Le mot de passe doit contenir</h3>
+                                <ul class="checklist">
+                                    <li class="list-item">Au moins 8 caratères</li>
+                                    <li class="list-item">Au moins 1 nombre</li>
+                                    <li class="list-item">Au moins 1 minuscule</li>
+                                    <li class="list-item">Au moins 1 majuscule</li>
+                                    <li class="list-item">Au moins 1 caratère spécial</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="input-login">
+                            <label for="confirmPassword" class="label">Confirmation du mot de passe</label>
+                            <input type="password" name="confirmPassword" id="confirmPassword">
+                        </div>
+                        <input class="submit" type="submit" value="S'enregistrer">
+                        <div class="span">Vous avez déjà un compte ?<a href="/login"> Se connecter</a></div>
+                    </form>
                 </div>
-                <div class="input-login">
-                    <label for="confirmPassword" class="label">Confirmation du mot de passe</label>
-                    <input type="password" name="confirmPassword" id="confirmPassword">
-                </div>
-                    
-                <input class="submit" type="submit" value="S'enregistrer">
-                <div class="span">Vous avez déjà un compte ?<a href="/login"> Se connecter</a></div>
-            </form>
-        </div>
-    </div>
+            </div>
+        </section>
 
-</section>
+        </body>
 
-</body>
-
-</html>
+        </html>

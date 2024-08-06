@@ -24,7 +24,7 @@ app.use(session({
 	saveUninitialized: true,
     cookie: {
         maxAge: 3600000 // expire après 1 heure (en millisecondes)
-      }
+    }
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -67,6 +67,7 @@ app.get('/', (request, response) => {
 app.get("/admin-home", (request, response) => {
     response.render("admin-home");
 });
+
 app.get('/theme-quiz-front', (request, response) => {
     connect.query("SELECT id, nom, img, icone FROM quizzes WHERE type_code='front'", (err, result) => {
         if (err) throw err;
@@ -83,10 +84,12 @@ app.get("/theme-quiz-back", (request, response) => {
 app.get("/add-quizz", (request, response) => {
     response.render("add-quizz");
 });
+app.get("/add-question", (request, response) => {
+    response.render("add-question");
+});
 app.post('/add-quizz', upload.single('image'), (req, res) => {
     const { nom, type, niveau, temps, questions, description, icone } = req.body;
     const imageFileName = req.file.filename;
-    console.log({ nom, type, niveau, temps, questions, description, icone })
   
     if (!nom || !type || !niveau || !temps || !questions || !description || !icone) {
       res.redirect('/add-quizz?error=2');
@@ -113,22 +116,34 @@ const checkAuthentication = (request, response, next) => {
     if (!pseudo) {
         response.redirect('/login'); 
     } else {
-        next(); // L'utilisateur est connecté, passez à la prochaine étape de traitement
+        next();
     }
 };
 
 app.get("/quiz-description/:id", (request, response) => {
     const id = parseInt(request.params.id);
-    const isAdmin = request.session.isAdmin
-    connect.query(`SELECT * FROM quizzes WHERE id=${id}`, (err, quizResult) => {
+
+    const sqlFindQuiz = "SELECT * FROM quizzes WHERE id = ?";
+    connect.query(sqlFindQuiz, [id], (err, quizResult) => {
         if (err) throw err;
-        
-        connect.query(`SELECT * FROM quizzes`, (err, allQuizzesResult) => {
+
+        const sqlCountQuestions = "SELECT COUNT(*) AS questionCount FROM questions WHERE id_quizzes = ?";
+        connect.query(sqlCountQuestions, [id], (err, countResult) => {
             if (err) throw err;
-            response.render("quiz-description", { quiz: quizResult[0], allQuizzes: allQuizzesResult });
+
+            connect.query("SELECT * FROM quizzes", (err, allQuizzesResult) => {
+                if (err) throw err;
+
+                response.render("quiz-description", {
+                    quiz: quizResult[0],
+                    allQuizzes: allQuizzesResult,
+                    questionCount: countResult[0].questionCount
+                });
+            });
         });
     });
 });
+
 
 app.get("/admin-reponses", (request, response) => {
     connect.query(`SELECT reponses.*, questions.question AS question_texte, questions.id_quizzes AS question_id_quizzes, quizzes.nom AS nom_quiz
@@ -158,7 +173,6 @@ app.get("/admin-quizz", (request, response) => {
     })
 });
 
-
 app.get("/quiz/:id", checkAuthentication, (request, response) => {
     const id = parseInt(request.params.id);
 
@@ -173,7 +187,7 @@ app.get("/quiz/:id", checkAuthentication, (request, response) => {
         
         if (userResult.length > 0) {
             const userId = userResult[0].id;
-            connect.query(`
+            const sqlSelectQuestions = `
                 SELECT questions.*, 
                     reponses.texte_reponse, 
                     reponses.est_correcte, 
@@ -181,14 +195,13 @@ app.get("/quiz/:id", checkAuthentication, (request, response) => {
                 FROM questions
                 INNER JOIN reponses ON questions.id = reponses.id_questions
                 INNER JOIN quizzes ON questions.id_quizzes = quizzes.id
-                WHERE questions.id_quizzes = ${id}
-            `, (err, result) => {
+                WHERE questions.id_quizzes = ?`;
+            connect.query(sqlSelectQuestions, [id], (err, result) => {
                 if (err) {
                     console.error("Une erreur s'est produite :", err);
                     throw err;
                 }
-
-                //console.log(result)
+                //console.log("resulat requete :", result)
                 // [
                 //     RowDataPacket {
                 //       id: 11,
@@ -202,7 +215,6 @@ app.get("/quiz/:id", checkAuthentication, (request, response) => {
 
                 // Créez un objet pour organiser les données par question
                 const questionsData = {};
-                // const idQuestions = []; 
 
                 result.forEach((row) => {
                     const questionId = row.id;
@@ -224,14 +236,15 @@ app.get("/quiz/:id", checkAuthentication, (request, response) => {
 
                 // Organisez les données pour afficher dans le modèle EJS
                 const quizData = {
-                    nomQuiz: result[0].nomQuiz, // Le nom du quiz est le même pour toutes les questions
+                    nomQuiz: result[0].nomQuiz, 
                     idQuiz: result[0].id_quizzes,
-                    questions: Object.values(questionsData), // Convertissez l'objet en tableau d'objets pour l'affichage
+                    questions: Object.values(questionsData), // Convertir l'objet en tableau d'objets
                 };
+
 
                 response.render("quiz", {
                     pseudo: request.session.pseudo,
-                    userId: userId, // Ajoutez l'ID de l'utilisateur ici
+                    userId: userId,
                     quizData,
                     currentQuestionIndex: 0,
                 });
@@ -244,11 +257,10 @@ app.get("/quiz/:id", checkAuthentication, (request, response) => {
 
 
 app.post('/form-quiz', async (request, response) => {
-    const quizData = request.body; // Les données du formulaire
+    const quizData = request.body;
     const pseudo = request.session.pseudo;
-    const id = parseInt(request.params.id);
+    // const id = parseInt(request.params.id);
   
-    // Calcul du score final
     let scoreFinal = 0;
 
     const promises = [];
@@ -312,8 +324,6 @@ app.post('/form-quiz', async (request, response) => {
             console.error('Utilisateur introuvable dans la base de données');
         }
     });
-  
-  
 });
 
 
@@ -369,6 +379,7 @@ app.post('/auth', function(request, response) {
     if (pseudo && password) {
         connect.query('SELECT * FROM utilisateurs WHERE pseudo = ?', [pseudo], function(error, results, fields) {
             if (error) throw error;
+           
             if (results.length > 0) {
                 const hashedPassword = results[0].password;
                 const isAdmin = results[0].admin === 'oui';

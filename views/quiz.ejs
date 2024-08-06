@@ -13,20 +13,34 @@
 
   <% quizData.questions.forEach(function (question,  index) { %>
     <section class="flex section-quiz">
-        <div class="w-100 text-align">
+        
+        <div class="w-100 text-align text-question">
+          <% var numeroQuestion = index + 1; %>
+            <div class="number-question">Question <%= numeroQuestion %></div>
             <p id="text-question"><%= question.question %></p>
             <input type="hidden" name="questionId<%= index %>" value="<%= question.idQuestions %>" />
+          
         </div>
         <ul class="w-100 text-align">
+          <%
+          // Déclaration d'une variable pour le numéro de réponse
+          var numeroReponse = 1;
+          %>
           <% question.reponses.forEach(function (reponse) { %>
            
-            <li class="btn-opaque">
+            <li class="btn-choice flex-only">
+                <div class="number-reponse"><%= numeroReponse %></div>
                 <label for="<%= reponse.texte_reponse %>"></label>
                 <input type="radio" name="reponse<%= index %>" class="btn-radio" id="<%= reponse.texte_reponse %>" value="<%= reponse.texte_reponse %>" 
                  /> <%= reponse.texte_reponse %>
             </li>
+            <% 
+            // Incrémentation du numéro de réponse à chaque itération
+            numeroReponse++;
+            %> 
           <% }) %>
         </ul>
+        
     </section>
     <% }) %>
     <div class="flex space-evenly mb-40">

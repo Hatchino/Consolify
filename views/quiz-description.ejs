@@ -14,7 +14,7 @@
                         <i class="fa-solid fa-question"></i>
                         <p class="uppercase">Questions</p>
                     </div>
-                    <div class="text-align <%= quiz.type_code === 'front' ? 'color-peach' : 'color-dark-blue' %>"><%= quiz.nb_questions %></div>
+                    <div class="text-align <%= quiz.type_code === 'front' ? 'color-peach' : 'color-dark-blue' %>"><%= questionCount %></div>
                     
                 </div>
                 <div class="bloc-info <%= quiz.type_code === 'front' ? 'border-sand' : 'border-dark-blue' %>">
@@ -49,12 +49,12 @@
                         <div class="flex <%= quiz.type_code === 'front' ? 'bg-kaki border-kaki' : 'bg-turquoise border-turquoise' %>">Retour</div>
                     </a>
                 </div>
-                <div class="btn-start uppercase <%= quiz.type_code === 'front' ? 'bg-kaki border-kaki' : 'bg-turquoise border-turquoise' %>"><a href="/quiz/<%= quiz.id  %>">Commencer</a></div>
+                <a href="/quiz/<%= quiz.id  %>"><div class="btn-start uppercase <%= quiz.type_code === 'front' ? 'bg-kaki border-kaki' : 'bg-turquoise border-turquoise' %>">Commencer</div></a>
             </div>
         </div>
         <div class="navbar <%= quiz.type_code === 'front' ? 'bg-sand' : 'bg-dark-blue navbar-back' %>">
 
-            <div>
+            <section class="section-navbar">
                 <h1>CONSOLIFY</h1>
                 <div class="horizontal-line <%= quiz.type_code === 'front' ? 'bg-peach' : 'bg-dark-horizontal-line' %>"></div>
                 <div>
@@ -108,18 +108,18 @@
                 <div class="nav-category">
                     <% allQuizzes.forEach(function (oneQuiz) { %>
                     <div class="horizontal-line <%= quiz.type_code === 'front' ? 'bg-peach' : 'bg-dark-horizontal-line' %>"></div>
-                    <a href="/quiz-description/<%= oneQuiz.id %>" class="uppercase"><%= oneQuiz.nom %></a>
+                    <div class="hover-theme <%= quiz.type_code === 'front' ? ' navbar-hover-front' : 'navbar-hover-back' %>"><a href="/quiz-description/<%= oneQuiz.id %>" class="uppercase"><%= oneQuiz.nom %></a></div>
                    
                     <% }) %>
                 </div>
-            </div>
+            </section>
 
             <footer>
-                <div class="flex" id="toggleFooter">
-                    <i class="fa-solid fa-chevron-up rotate-icon"></i>
+                <div class="flex" id="footerIcon">
+                    <i class="fa-solid fa-chevron-up rotate-icon-footer"></i>
                 </div>
                 <div class="horizontal-line <%= quiz.type_code === 'front' ? 'bg-peach' : 'bg-dark-horizontal-line' %>"></div>
-                <div class="flex-only">
+                <div class="flex-only toggle-footer footer-content">
                     <div class="animation-footer-link <%= quiz.type_code === 'front' ? 'animation-link-sand' : 'animation-link-dark' %>">
                         <p><a href="#">CGU</a></p>
                         <p><a href="#">Politique de confidentialité</a></p>

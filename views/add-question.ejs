@@ -1,0 +1,81 @@
+<% var title="Back-office Ajouter un quizz" %>
+    <%- include('header.ejs', { title: title }) %>
+
+        <% if (typeof pseudo !=='undefined' && isAdmin) { %>
+
+            <header>
+                <div class="admin-banner flex">
+                    <div class="btn-back circle-back"><i class="fa-solid fa-arrow-left"></i></div>
+                    <h2 class="uppercase m-auto ">Administration Consolify</h2>
+                </div>
+            </header>
+
+            <h1 class="text-align uppercase mb-40 mt-40">Ajouter une question</h1>
+
+            <form action="/add-question" method="POST" enctype="multipart/form-data" class="form" id="form-add-question">
+    <div id="message-error"></div>
+
+    <label for="nom">Nom du Quiz <span class="asterisque">*</span></label>
+    <select id="nom" name="nom" required>
+        <!-- boucle -->
+        <option value="facile">Facile</option>
+    </select>
+
+    <label for="questions">Question <span class="asterisque">*</span></label>
+    <input type="text" id="questions" name="questions" required>
+
+    <div class="form-reponses">
+        <div class="flex-only">
+            <div>
+                <label for="reponse1">Choix 1 <span class="asterisque">*</span></label>
+                <textarea id="reponse1" name="reponse1" required></textarea>
+            </div>
+            <div>
+                <label for="est_correcte1">La réponse</label>
+                <div><input type="radio" class="option-radio" name="est_correcte" id="est_correcte" value="reponse1"></div>
+            </div>
+        </div>
+
+        <div class="flex-only">
+            <div>
+                <label for="reponse2">Choix 2 <span class="asterisque">*</span></label>
+                <textarea id="reponse2" name="reponse2" required></textarea>
+            </div>
+            <div>
+                <div></div>
+                <input type="radio" class="option-radio" name="est_correcte" id="est_correcte" value="reponse2">
+            </div>
+        </div>
+
+        <div class="flex-only">
+            <div>
+                <label for="reponse3">Choix 3</label>
+                <textarea id="reponse3" name="reponse3"></textarea>
+            </div>
+            <div>
+               <input type="radio" class="option-radio" name="est_correcte" id="est_correcte" value="reponse3">
+            </div>
+        </div>
+
+        <div class="flex-only">
+            <div>
+                <label for="reponse4">Choix 4</label>
+                <textarea id="reponse4" name="reponse4"></textarea>
+            </div>
+            <div>
+                <input type="radio" class="option-radio" name="est_correcte" id="est_correcte" value="reponse4">
+            </div>
+        </div>
+
+    </div>
+
+    <button type="submit">Ajouter la question</button>
+</form>
+
+
+
+            <% } else { %>
+                <script>
+                    window.location.href = "/";
+                </script>
+                <% } %>

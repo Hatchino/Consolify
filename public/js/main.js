@@ -9,6 +9,48 @@ if (togglePassword) {
   });
 }
 
+
+// string password validation
+let passwordInp = document.querySelector('.password-input');
+let passwordChecklist = document.querySelectorAll('.list-item');
+
+let validationRegex = [
+    { regex: /.{8,}/ }, // min 8 letters,
+    { regex: /[0-9]/ }, // numbers from 0 - 9
+    { regex: /[a-z]/ }, // letters from a - z (lowercase)
+    { regex: /[A-Z]/}, // letters from A-Z (uppercase),
+    { regex: /[^A-Za-z0-9]/} // special characters
+]
+
+if (passwordInp) {
+passwordInp.addEventListener('keyup', () => {
+    validationRegex.forEach((item, i) => {
+
+        let isValid = item.regex.test(passwordInp.value);
+
+        if(isValid) {
+            passwordChecklist[i].classList.add('checked');
+        } else{
+            passwordChecklist[i].classList.remove('checked');
+        }
+
+    })
+})
+}
+
+let form = document.getElementById('form-login');
+if (form) {
+  form.addEventListener('submit', (event) => {
+      let isValid = validationRegex.every((item) => item.regex.test(passwordInp.value));
+      if (!isValid) {
+          event.preventDefault();
+          window.location.href = '/register?error=5';
+      }
+  });
+}
+
+
+
 //// Gestion des erreurs forms register & login
 const messageErrorDiv = document.getElementById("message-error");
 const urlParams = new URLSearchParams(window.location.search);
@@ -31,6 +73,8 @@ if(messageErrorDiv) {
     case "4":
       messageErrorDiv.innerHTML = "Pseudo ou mot de passe incorrect.";
       messageErrorDiv.style.display = "block"; 
+    case "5":
+      messageErrorDiv.innerHTML = "Veuillez remplir toutes les conditions du mot de passe.";
     break;
     default:
       messageErrorDiv.style.display = "none"; 
@@ -40,20 +84,20 @@ if(messageErrorDiv) {
 
 
 //// Bannière si connecté
-document.addEventListener("DOMContentLoaded", function () {
-  var barre = document.getElementById("barre");
-  if (barre) {
-    barre.style.transition = "margin-top 0.5s";
-    barre.style.marginTop = "0";
+// document.addEventListener("DOMContentLoaded", function () {
+//   var barre = document.getElementById("barre");
+//   if (barre) {
+//     barre.style.transition = "margin-top 0.5s";
+//     barre.style.marginTop = "0";
     
-    var fermer = document.getElementById("fermer");
-    if (fermer) {
-      fermer.addEventListener("mousedown", function () {
-        barre.style.marginTop = "-70px";
-      });
-    }
-  }
-});
+//     var fermer = document.getElementById("fermer");
+//     if (fermer) {
+//       fermer.addEventListener("mousedown", function () {
+//         barre.style.marginTop = "-70px";
+//       });
+//     }
+//   }
+// });
 
 //// Dérouler les thèmes
 const toggleDiv = document.getElementById("toggleDiv");
@@ -64,14 +108,33 @@ if (toggleDiv) {
   toggleDiv.addEventListener("click", function () {
     if (!navCategory.classList.contains("open")) {
       // Ouvrir la catégorie de navigation
-      navCategory.style.display = "block";
       navCategory.classList.add("open");
       icon.style.transform = "rotate(180deg)";
     } else {
       // Fermer la catégorie de navigation
-      navCategory.style.display = "none";
       navCategory.classList.remove("open");
       icon.style.transform = "rotate(0deg)";
+    }
+  });
+}
+
+
+//// Dérouler les thèmes
+const navFooter = document.querySelector(".toggle-footer");
+const toggleFooter = document.getElementById ("footerIcon");
+const iconFooter = document.querySelector(".rotate-icon-footer");
+
+if (toggleFooter) {
+  toggleFooter.addEventListener("click", function () {
+    console.log("click");
+    if (!navFooter.classList.contains("open")) {
+      // Ouvrir footer
+      navFooter.classList.add("open");
+      iconFooter.style.transform = "rotate(180deg)";
+    } else {
+      // Fermer footer
+      navFooter.classList.remove("open");
+      iconFooter.style.transform = "rotate(0deg)";
     }
   });
 }
